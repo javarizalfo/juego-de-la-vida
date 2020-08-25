@@ -2,15 +2,40 @@ package gameoflife;
 
 public class Board {
     // === === === === === FIELDS === === === === ===//
-    int width;
-    int height;
-    int[][] board;
+    private int width;
+    private int height;
+    private int[][] board;
 
     // === === === === === CONSTRUCTOR === === === === ===//
     public Board(int width, int height) {
         this.width = width;
         this.height = height;
         this.board = new int[height][width];
+    }
+
+    // === === === === === GETTERS/SETTERS === === === === ===//
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(int[][] board) {
+        this.board = board;
     }
 
     // === === === === === METHODS === === === === ===//
@@ -33,11 +58,11 @@ public class Board {
     }
 
     public void setAlive(int x, int y) {
-        this.board[y][x] = 1;
+        this.setCellState(x, y, 1);
     }
 
     public void setDead(int x, int y) {
-        this.board[y][x] = 0;
+        this.setCellState(x, y, 0);
     }
 
     public int totalAliveNeighbors(int x, int y) {
@@ -68,6 +93,18 @@ public class Board {
         }
 
         return this.board[y][x];
+    }
+
+    public void setCellState(int x, int y, int state) {
+        if (y < 0 || y >= height) {
+            return;
+        }
+
+        if (x < 0 || x >= width) {
+            return;
+        }
+
+        this.board[y][x] = state;
     }
 
     public void next() {
@@ -103,22 +140,6 @@ public class Board {
         }
 
         this.board = nextBoard;
-    }
-
-    // === === === === === MAIN === === === === ===//
-    public static void main(String[] args) {
-        Board board = new Board(25, 25);
-
-        board.setAlive(12, 12);
-        board.setAlive(13, 12);
-        board.setAlive(14, 12);
-
-        board.print();
-        board.next();
-        board.print();
-        board.next();
-        board.print();
-        board.next();
     }
 
 }
