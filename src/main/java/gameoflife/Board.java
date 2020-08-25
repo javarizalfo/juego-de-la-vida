@@ -5,12 +5,16 @@ public class Board {
     private int width;
     private int height;
     private int[][] board;
+    private int dead;
+    private int alive;
 
     // === === === === === CONSTRUCTOR === === === === ===//
     public Board(int width, int height) {
         this.width = width;
         this.height = height;
         this.board = new int[height][width];
+        this.dead = 0;
+        this.alive = 1;
     }
 
     // === === === === === GETTERS/SETTERS === === === === ===//
@@ -44,7 +48,7 @@ public class Board {
             String visualRow = "|";
 
             for (int cell : row) {
-                if (cell == 0) {
+                if (cell == dead) {
                     visualRow += ".";
                 } else {
                     visualRow += "*";
@@ -58,11 +62,11 @@ public class Board {
     }
 
     public void setAlive(int x, int y) {
-        this.setCellState(x, y, 1);
+        this.setCellState(x, y, alive);
     }
 
     public void setDead(int x, int y) {
-        this.setCellState(x, y, 0);
+        this.setCellState(x, y, dead);
     }
 
     public int totalAliveNeighbors(int x, int y) {
@@ -85,11 +89,11 @@ public class Board {
 
     public int isCellAlive(int x, int y) {
         if (y < 0 || y >= height) {
-            return 0;
+            return dead;
         }
 
         if (x < 0 || x >= width) {
-            return 0;
+            return dead;
         }
 
         return this.board[y][x];
@@ -118,17 +122,17 @@ public class Board {
                 int aliveNeighbors = totalAliveNeighbors(xindex, yindex);
                 int currentCell = nextBoard[yindex][xindex]; // Next board's current cell
 
-                if (isCellAlive(xindex, yindex) == 1) {
+                if (isCellAlive(xindex, yindex) == alive) {
                     if (aliveNeighbors < 2) {
-                        currentCell = 0;
+                        currentCell = dead;
                     } else if (aliveNeighbors > 1 && aliveNeighbors < 4) {
-                        currentCell = 1;
+                        currentCell = alive;
                     } else if (aliveNeighbors > 3) {
-                        currentCell = 0;
+                        currentCell = dead;
                     }
                 } else {
                     if (aliveNeighbors == 3) {
-                        currentCell = 1;
+                        currentCell = alive;
                     }
                 }
 

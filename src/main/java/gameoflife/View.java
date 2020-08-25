@@ -13,26 +13,30 @@ import javafx.scene.transform.NonInvertibleTransformException;
 
 public class View extends VBox {
     // === === === === === FIELDS === === === === ===//
-    private Button nextButton;
     private Canvas canvas;
     private Board board;
     private Affine affine;
+    private int alive;
+    private int dead;
 
     // === === === === === CONSTRUCTOR === === === === ===//
     public View() {
-        this.nextButton = new Button("Next");
+        // this.nextButton = new Button("Next");
         this.canvas = new Canvas(500, 500);
         this.board = new Board(26, 26);
         this.affine = new Affine();
+        this.alive = 1;
+        this.dead = 0;
 
-        this.nextButton.setOnAction(actionEvent -> {
-            board.next();
-            draw();
-        });
+        // this.nextButton.setOnAction(actionEvent -> {
+        // board.next();
+        // draw();
+        // });
 
         this.canvas.setOnMousePressed(this::handleFill);
 
-        this.getChildren().addAll(this.nextButton, this.canvas);
+        Toolbar toolbar = new Toolbar(this);
+        this.getChildren().addAll(toolbar, this.canvas);
 
         this.affine.appendScale(500 / 26f, 500 / 26f);
 
@@ -42,10 +46,31 @@ public class View extends VBox {
         this.board.setAlive(13, 14);
         this.board.setAlive(12, 14);
         this.board.setAlive(11, 14);
+    }
 
-        this.board.setAlive(2, 1);
-        this.board.setAlive(2, 2);
-        this.board.setAlive(2, 3);
+    // === === === === === GETTERS/SETTERS === === === === ===//
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public void setCanvas(Canvas canvas) {
+        this.canvas = canvas;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public Affine getAffine() {
+        return affine;
+    }
+
+    public void setAffine(Affine affine) {
+        this.affine = affine;
     }
 
     // === === === === === METHODS === === === === ===//
@@ -59,7 +84,7 @@ public class View extends VBox {
         graphics.setFill(Color.BLACK);
         for (int x = 0; x < this.board.getWidth(); x++) {
             for (int y = 0; y < this.board.getHeight(); y++) {
-                if (this.board.isCellAlive(x, y) == 1)
+                if (this.board.isCellAlive(x, y) == alive)
                     graphics.fillRect(x, y, 1, 1);
             }
         }
@@ -84,7 +109,7 @@ public class View extends VBox {
             int xcoord = (int) coordinates.getX();
             int ycoord = (int) coordinates.getY();
 
-            if (this.board.isCellAlive(xcoord, ycoord) == 0) {
+            if (this.board.isCellAlive(xcoord, ycoord) == dead) {
                 this.board.setAlive(xcoord, ycoord);
                 draw();
             } else {
