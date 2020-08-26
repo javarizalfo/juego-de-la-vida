@@ -5,6 +5,7 @@ public class Board {
     private int width;
     private int height;
     private int[][] board;
+    private int generationcount;
     private int dead;
     private int alive;
 
@@ -13,6 +14,7 @@ public class Board {
         this.width = width;
         this.height = height;
         this.board = new int[height][width];
+        this.generationcount = 0;
         this.dead = 0;
         this.alive = 1;
     }
@@ -40,6 +42,14 @@ public class Board {
 
     public void setBoard(int[][] board) {
         this.board = board;
+    }
+
+    public int getGenerationcount() {
+        return generationcount;
+    }
+
+    public void setGenerationcount(int generationCount) {
+        this.generationcount = generationCount;
     }
 
     // === === === === === METHODS === === === === ===//
@@ -142,7 +152,7 @@ public class Board {
             yindex += 1;
             xindex = 0;
         }
-
+        this.generationcount += 1;
         this.board = nextBoard;
     }
 

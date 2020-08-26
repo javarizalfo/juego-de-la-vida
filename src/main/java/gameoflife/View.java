@@ -1,10 +1,8 @@
 package gameoflife;
 
-import javafx.event.ActionEvent;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -16,27 +14,26 @@ public class View extends VBox {
     private Canvas canvas;
     private Board board;
     private Affine affine;
+    private Toolbar toolbar;
+    private Bottombar bottombar;
     private int alive;
     private int dead;
 
     // === === === === === CONSTRUCTOR === === === === ===//
     public View() {
-        // this.nextButton = new Button("Next");
         this.canvas = new Canvas(500, 500);
         this.board = new Board(26, 26);
         this.affine = new Affine();
+        this.bottombar = new Bottombar();
+        this.toolbar = new Toolbar(this, this.board, this.bottombar);
         this.alive = 1;
         this.dead = 0;
 
-        // this.nextButton.setOnAction(actionEvent -> {
-        // board.next();
-        // draw();
-        // });
-
         this.canvas.setOnMousePressed(this::handleFill);
 
-        Toolbar toolbar = new Toolbar(this);
-        this.getChildren().addAll(toolbar, this.canvas);
+        this.getChildren().addAll(this.toolbar, this.canvas, this.bottombar);
+
+        this.bottombar.setGenCount(this.board.getGenerationcount());
 
         this.affine.appendScale(500 / 26f, 500 / 26f);
 

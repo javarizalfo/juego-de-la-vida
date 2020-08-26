@@ -5,25 +5,35 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 
 public class Toolbar extends ToolBar {
-
+    // === === === === === FIELDS === === === === ===//
     private View view;
+    private Board board;
+    private Bottombar bottombar;
+    private Button start, stop, next, clear;
 
-    public Toolbar(View view) {
+    // === === === === === CONSTRUCTOR === === === === ===//
+    public Toolbar(View view, Board board, Bottombar bottombar) {
         this.view = view;
+        this.board = board;
+        this.bottombar = bottombar;
 
-        Button start = new Button("Start");
+        this.start = new Button("Start");
         start.setOnAction(this::handleStart);
 
-        Button stop = new Button("Stop");
+        this.stop = new Button("Stop");
         stop.setOnAction(this::handleStop);
 
-        Button next = new Button("Next");
+        this.next = new Button("Next");
         next.setOnAction(this::handleNext);
 
+        this.clear = new Button("Clear");
+        clear.setOnAction(this::handleClear);
 
-        this.getItems().addAll(start, stop, next);
+
+        this.getItems().addAll(this.start, this.stop, this.next, this.clear);
     }
 
+    // === === === === === METHODS === === === === ===//
     private void handleStart(ActionEvent actionEvent) {
 
     }
@@ -34,7 +44,12 @@ public class Toolbar extends ToolBar {
 
     private void handleNext(ActionEvent actionEvent) {
         this.view.getBoard().next();
+        this.bottombar.setGenCount(this.board.getGenerationcount());
         this.view.draw();
+    }
+
+    private void handleClear(ActionEvent actionEvent) {
+
     }
 
 }
