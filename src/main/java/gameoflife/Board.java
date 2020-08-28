@@ -156,4 +156,16 @@ public class Board {
         this.board = nextBoard;
     }
 
+    public static Board copyBoard(Board board) {
+        Board copyBoard = new Board(board.getWidth(), board.getHeight());
+
+        for (int y = 0; y < board.getHeight(); y++) {
+            for (int x = 0; x < board.getWidth(); x++) {
+                copyBoard.setCellState(x, y, board.isCellAlive(x, y));
+            }
+        }
+
+        return copyBoard;
+    }
+
 }

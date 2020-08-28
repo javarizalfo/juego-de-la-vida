@@ -11,18 +11,23 @@ import javafx.scene.transform.NonInvertibleTransformException;
 
 public class View extends VBox {
     // === === === === === FIELDS === === === === ===//
+    public static final int EDITING = 0;
+    public static final int RUNNING = 1;
     private Canvas canvas;
     private Board board;
+    private Board initialboard;
     private Affine affine;
     private Toolbar toolbar;
     private Bottombar bottombar;
     private int alive;
     private int dead;
+    private int appstate = EDITING;
 
     // === === === === === CONSTRUCTOR === === === === ===//
     public View() {
         this.canvas = new Canvas(500, 500);
-        this.board = new Board(26, 26);
+        this.initialboard = new Board(26, 26);
+        this.board = Board.copyBoard(initialboard);
         this.affine = new Affine();
         this.bottombar = new Bottombar();
         this.toolbar = new Toolbar(this, this.board, this.bottombar);
@@ -37,12 +42,12 @@ public class View extends VBox {
 
         this.affine.appendScale(500 / 26f, 500 / 26f);
 
-        this.board.setAlive(12, 12);
-        this.board.setAlive(13, 13);
-        this.board.setAlive(13, 14);
-        this.board.setAlive(13, 14);
-        this.board.setAlive(12, 14);
-        this.board.setAlive(11, 14);
+        this.initialboard.setAlive(12, 12);
+        this.initialboard.setAlive(13, 13);
+        this.initialboard.setAlive(13, 14);
+        this.initialboard.setAlive(13, 14);
+        this.initialboard.setAlive(12, 14);
+        this.initialboard.setAlive(11, 14);
     }
 
     // === === === === === GETTERS/SETTERS === === === === ===//
@@ -70,6 +75,18 @@ public class View extends VBox {
         this.affine = affine;
     }
 
+    public void setAppstate(int appstate) {
+        if (appstate == this.appstate) {
+            return;
+        }
+
+        if (appstate == RUNNING) {
+            this.board = Board.copyBoard(this.initialboard);
+        }
+
+        this.appstate = appstate;
+    }
+
     // === === === === === METHODS === === === === ===//
     public void draw() {
         GraphicsContext graphics = this.canvas.getGraphicsContext2D();
@@ -78,12 +95,10 @@ public class View extends VBox {
         graphics.setFill(Color.GRAY);
         graphics.fillRect(0, 0, 500, 500);
 
-        graphics.setFill(Color.BLACK);
-        for (int x = 0; x < this.board.getWidth(); x++) {
-            for (int y = 0; y < this.board.getHeight(); y++) {
-                if (this.board.isCellAlive(x, y) == alive)
-                    graphics.fillRect(x, y, 1, 1);
-            }
+        if (this.appstate == EDITING) {
+            drawBoard(this.initialboard);
+        } else {
+            drawBoard(this.board);
         }
 
         graphics.setStroke(Color.DARKGRAY);
@@ -96,9 +111,25 @@ public class View extends VBox {
         }
     }
 
+    public void drawBoard(Board boardToDraw) {
+        GraphicsContext graphics = this.canvas.getGraphicsContext2D();
+
+        graphics.setFill(Color.BLACK);
+        for (int x = 0; x < boardToDraw.getWidth(); x++) {
+            for (int y = 0; y < boardToDraw.getHeight(); y++) {
+                if (boardToDraw.isCellAlive(x, y) == alive)
+                    graphics.fillRect(x, y, 1, 1);
+            }
+        }
+    }
+
     public void handleFill(MouseEvent event) {
         double mousex = event.getX();
         double mousey = event.getY();
+
+        if (this.appstate == RUNNING) {
+            return;
+        }
 
         try {
             Point2D coordinates = this.affine.inverseTransform(mousex, mousey);
@@ -106,11 +137,11 @@ public class View extends VBox {
             int xcoord = (int) coordinates.getX();
             int ycoord = (int) coordinates.getY();
 
-            if (this.board.isCellAlive(xcoord, ycoord) == dead) {
-                this.board.setAlive(xcoord, ycoord);
+            if (this.initialboard.isCellAlive(xcoord, ycoord) == dead) {
+                this.initialboard.setAlive(xcoord, ycoord);
                 draw();
             } else {
-                this.board.setDead(xcoord, ycoord);
+                this.initialboard.setDead(xcoord, ycoord);
                 draw();
             }
 
