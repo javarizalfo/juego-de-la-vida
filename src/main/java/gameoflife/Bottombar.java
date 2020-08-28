@@ -5,7 +5,7 @@ import javafx.scene.layout.HBox;
 
 public class Bottombar extends HBox {
     // === === === === === FIELDS === === === === ===//
-    private static String generationcountformat = "Generatin: %d";
+    private static String generationcountformat = "Generation: %d";
 
     private Label generationcount;
 

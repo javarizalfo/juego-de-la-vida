@@ -4,6 +4,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
@@ -26,19 +28,26 @@ public class View extends VBox {
     private int alive;
     private int dead;
     private int appstate = EDITING;
+    private Color color;
 
     // === === === === === CONSTRUCTOR === === === === ===//
-    public View() {
+    public View(int width, int height) {
         this.canvas = new Canvas(500, 500);
         this.affine = new Affine();
-        this.initialboard = new Board(26, 26);
+        this.initialboard = new Board(width, height);
         this.board = Board.copyBoard(initialboard);
         this.bottombar = new Bottombar();
         this.toolbar = new Toolbar(this, this.board, this.bottombar);
         this.alive = 1;
         this.dead = 0;
+        this.color = Color.BLACK;
 
         this.canvas.setOnMousePressed(this::handleFill);
+
+        // Pane pane = new Pane();
+        // pane.setMinSize(0, 0);
+        // pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        // VBox.setVgrow(pane, Priority.ALWAYS);
 
         this.getChildren().addAll(this.toolbar, this.canvas, this.bottombar);
 
@@ -104,6 +113,14 @@ public class View extends VBox {
         return simulator;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     // === === === === === METHODS === === === === ===//
     public void draw() {
         GraphicsContext graphics = this.canvas.getGraphicsContext2D();
@@ -131,7 +148,7 @@ public class View extends VBox {
     public void drawBoard(Board boardToDraw) {
         GraphicsContext graphics = this.canvas.getGraphicsContext2D();
 
-        graphics.setFill(Color.BLACK);
+        graphics.setFill(this.color);
         for (int x = 0; x < boardToDraw.getWidth(); x++) {
             for (int y = 0; y < boardToDraw.getHeight(); y++) {
                 if (boardToDraw.isCellAlive(x, y) == alive)
