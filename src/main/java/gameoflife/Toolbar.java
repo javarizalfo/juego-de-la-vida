@@ -9,7 +9,7 @@ public class Toolbar extends ToolBar {
     private View view;
     private Board board;
     private Bottombar bottombar;
-    private Button start, stop, reset, next, clear;
+    private Button start, stop, next, clear;
 
     // === === === === === CONSTRUCTOR === === === === ===//
     public Toolbar(View view, Board board, Bottombar bottombar) {
@@ -23,9 +23,6 @@ public class Toolbar extends ToolBar {
         this.stop = new Button("Stop");
         stop.setOnAction(this::handleStop);
 
-        this.reset = new Button("Reset");
-        reset.setOnAction(this::handleReset);
-
         this.next = new Button("Next");
         next.setOnAction(this::handleNext);
 
@@ -33,7 +30,7 @@ public class Toolbar extends ToolBar {
         clear.setOnAction(this::handleClear);
 
 
-        this.getItems().addAll(this.start, this.stop, this.next, this.reset, this.clear);
+        this.getItems().addAll(this.start, this.stop, this.next, this.clear);
     }
 
     // === === === === === METHODS === === === === ===//
@@ -43,11 +40,9 @@ public class Toolbar extends ToolBar {
     }
 
     private void handleStop(ActionEvent actionEvent) {
-        this.view.getSimulator().stop();
-    }
-
-    private void handleReset(ActionEvent actionEvent) {
         this.view.setAppstate(View.EDITING);
+        this.view.getSimulator().stop();
+        this.view.setInitialboard(this.view.getBoard());
         this.view.draw();
     }
 
@@ -55,8 +50,11 @@ public class Toolbar extends ToolBar {
         this.view.setAppstate(View.RUNNING);
 
         this.view.getBoard().next();
+        this.view.setInitialboard(this.view.getBoard());
         this.bottombar.setGenCount(this.board.getGenerationcount());
         this.view.draw();
+
+        this.view.setAppstate(View.EDITING);
     }
 
     private void handleClear(ActionEvent actionEvent) {
