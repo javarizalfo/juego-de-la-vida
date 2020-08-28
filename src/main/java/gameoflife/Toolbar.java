@@ -66,6 +66,8 @@ public class Toolbar extends ToolBar {
 
         this.view.getBoard().next();
         this.view.setInitialboard(this.view.getBoard());
+
+        this.board.setGenerationcount(this.view.getInitialboard().getGenerationcount());
         this.bottombar.setGenCount(this.board.getGenerationcount());
         this.view.draw();
 
@@ -73,15 +75,16 @@ public class Toolbar extends ToolBar {
     }
 
     private void handleClear(ActionEvent actionEvent) {
-        Board blankBoard = new Board(26, 26);
+        Board blankBoard = new Board(26, 26, 0);
         this.view.setAppstate(View.EDITING);
         this.view.setInitialboard(blankBoard);
+        this.board.setGenerationcount(0);
         this.bottombar.setGenCount(0);
         this.view.draw();
     }
 
     private void handleSampleGlider(ActionEvent actionEvent) {
-        Board newBoard = new Board(26, 26);
+        Board newBoard = new Board(26, 26, 0);
 
         newBoard.setAlive(12, 12);
         newBoard.setAlive(13, 13);
@@ -90,13 +93,14 @@ public class Toolbar extends ToolBar {
         newBoard.setAlive(12, 14);
         newBoard.setAlive(11, 14);
 
+        this.board.setGenerationcount(0);
         this.bottombar.setGenCount(0);
         this.view.setInitialboard(newBoard);
         this.view.draw();
     }
 
     private void handleSampleSpaceship(ActionEvent actionEvent) {
-        Board newBoard = new Board(26, 26);
+        Board newBoard = new Board(26, 26, 0);
 
         newBoard.setAlive(12, 12);
         newBoard.setAlive(15, 12);
@@ -108,13 +112,14 @@ public class Toolbar extends ToolBar {
         newBoard.setAlive(14, 15);
         newBoard.setAlive(15, 14);
 
+        this.board.setGenerationcount(0);
         this.bottombar.setGenCount(0);
         this.view.setInitialboard(newBoard);
         this.view.draw();
     }
 
     private void handleSampleAcorn(ActionEvent actionEvent) {
-        Board newBoard = new Board(26, 26);
+        Board newBoard = new Board(26, 26, 0);
 
         newBoard.setAlive(12, 12);
         newBoard.setAlive(14, 13);
@@ -124,6 +129,7 @@ public class Toolbar extends ToolBar {
         newBoard.setAlive(16, 14);
         newBoard.setAlive(17, 14);
 
+        this.board.setGenerationcount(0);
         this.bottombar.setGenCount(0);
         this.view.setInitialboard(newBoard);
         this.view.draw();

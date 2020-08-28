@@ -10,11 +10,11 @@ public class Board {
     private int alive;
 
     // === === === === === CONSTRUCTOR === === === === ===//
-    public Board(int width, int height) {
+    public Board(int width, int height, int count) {
         this.width = width;
         this.height = height;
         this.board = new int[height][width];
-        this.generationcount = 0;
+        this.generationcount = count;
         this.dead = 0;
         this.alive = 1;
     }
@@ -157,7 +157,8 @@ public class Board {
     }
 
     public static Board copyBoard(Board board) {
-        Board copyBoard = new Board(board.getWidth(), board.getHeight());
+        Board copyBoard =
+                new Board(board.getWidth(), board.getHeight(), board.getGenerationcount());
 
         for (int y = 0; y < board.getHeight(); y++) {
             for (int x = 0; x < board.getWidth(); x++) {

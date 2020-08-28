@@ -4,8 +4,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
@@ -34,7 +32,7 @@ public class View extends VBox {
     public View(int width, int height) {
         this.canvas = new Canvas(500, 500);
         this.affine = new Affine();
-        this.initialboard = new Board(width, height);
+        this.initialboard = new Board(width, height, 0);
         this.board = Board.copyBoard(initialboard);
         this.bottombar = new Bottombar();
         this.toolbar = new Toolbar(this, this.board, this.bottombar);
@@ -103,7 +101,7 @@ public class View extends VBox {
 
         if (appstate == RUNNING) {
             this.board = Board.copyBoard(this.initialboard);
-            this.simulator = new Simulator(this, this.board);
+            this.simulator = new Simulator(this, this.board, bottombar);
         }
 
         this.appstate = appstate;
