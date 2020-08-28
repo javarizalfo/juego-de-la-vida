@@ -71,6 +71,14 @@ public class View extends VBox {
         this.board = board;
     }
 
+    public Board getInitialboard() {
+        return initialboard;
+    }
+
+    public void setInitialboard(Board initialboard) {
+        this.initialboard = initialboard;
+    }
+
     public Affine getAffine() {
         return affine;
     }

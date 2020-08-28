@@ -60,7 +60,10 @@ public class Toolbar extends ToolBar {
     }
 
     private void handleClear(ActionEvent actionEvent) {
-
+        Board blankBoard = new Board(26, 26);
+        this.view.setAppstate(View.EDITING);
+        this.view.setInitialboard(blankBoard);
+        this.view.draw();
     }
 
 }
