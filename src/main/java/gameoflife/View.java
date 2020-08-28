@@ -14,11 +14,15 @@ public class View extends VBox {
     public static final int EDITING = 0;
     public static final int RUNNING = 1;
     private Canvas canvas;
+    private Affine affine;
+
     private Board board;
     private Board initialboard;
-    private Affine affine;
+    private Simulator simulator;
+
     private Toolbar toolbar;
     private Bottombar bottombar;
+
     private int alive;
     private int dead;
     private int appstate = EDITING;
@@ -26,9 +30,9 @@ public class View extends VBox {
     // === === === === === CONSTRUCTOR === === === === ===//
     public View() {
         this.canvas = new Canvas(500, 500);
+        this.affine = new Affine();
         this.initialboard = new Board(26, 26);
         this.board = Board.copyBoard(initialboard);
-        this.affine = new Affine();
         this.bottombar = new Bottombar();
         this.toolbar = new Toolbar(this, this.board, this.bottombar);
         this.alive = 1;
@@ -82,9 +86,14 @@ public class View extends VBox {
 
         if (appstate == RUNNING) {
             this.board = Board.copyBoard(this.initialboard);
+            this.simulator = new Simulator(this, this.board);
         }
 
         this.appstate = appstate;
+    }
+
+    public Simulator getSimulator() {
+        return simulator;
     }
 
     // === === === === === METHODS === === === === ===//

@@ -13,7 +13,8 @@ public class Simulator {
     public Simulator(View view, Board board) {
         this.view = view;
         this.board = board;
-        this.timeline = new Timeline(new KeyFrame(Duration.millis(500), this::doStep));
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(200), this::doStep));
+        this.timeline.setCycleCount(Timeline.INDEFINITE);
     }
 
     private void doStep(ActionEvent actionEvent) {

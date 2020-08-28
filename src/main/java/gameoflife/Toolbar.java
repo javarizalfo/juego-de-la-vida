@@ -38,11 +38,12 @@ public class Toolbar extends ToolBar {
 
     // === === === === === METHODS === === === === ===//
     private void handleStart(ActionEvent actionEvent) {
-
+        this.view.setAppstate(View.RUNNING);
+        this.view.getSimulator().start();
     }
 
     private void handleStop(ActionEvent actionEvent) {
-
+        this.view.getSimulator().stop();
     }
 
     private void handleReset(ActionEvent actionEvent) {
